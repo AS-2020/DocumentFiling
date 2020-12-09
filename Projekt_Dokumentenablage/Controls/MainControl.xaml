@@ -41,16 +41,34 @@
             </Viewbox>
             <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Document number" Grid.Row="1"/>
             <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Creation date" Grid.Row="2"/>
-            <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Location" Grid.Row="3"/>
-            <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Person" Grid.Row="4"/>
-            <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Brief description" Grid.Row="5"/>
+            <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Location" Grid.Row="3" Grid.RowSpan="2"/>
+            <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Person" Grid.Row="5" Grid.RowSpan="2"/>
+            <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Brief description" Grid.Row="7"/>
             <TextBlock Text="" Grid.Row="6"/>
             <TextBox Text="{Binding DocumentNumber}" Grid.Row="1" Grid.Column="1" IsReadOnly="{Binding RechnungsNummerTextBox}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             <TextBox Text="{Binding CreationDate}" Grid.Row="2" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-            <TextBox Text="{Binding Location}" Grid.RowSpan="2" Grid.Row="3" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-            <TextBox Text="{Binding Person}" Grid.Row="5" Grid.RowSpan="2" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <Grid Grid.Row="3" Grid.RowSpan="4" Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBox Text="{Binding Location}"  Grid.Row="0" Grid.Column="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <TextBox Text="{Binding Location}" Grid.Row="0" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <TextBox Text="{Binding Location}" Grid.Row="1" Grid.Column="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <TextBox Text="{Binding Location}" Grid.Row="1" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <TextBox Text="{Binding Person}"  Grid.Row="2" Grid.Column="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <TextBox Text="{Binding Person}" Grid.Row="2" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <TextBox Text="{Binding Person}" Grid.Row="3" Grid.Column="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <TextBox Text="{Binding Person}" Grid.Row="3" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            </Grid>
             <TextBox Text="{Binding BriefDescription}" Grid.Row="7" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="7" Grid.ColumnSpan="2">
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="8" Grid.ColumnSpan="2">
                 <Button Content="Speichern" Width="100" Margin="5" Command="{Binding SaveCommand}" IsEnabled="{Binding AendernButton, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"/>
                 <Button Content="Verwerfen" Width="100" Margin="5" Command="{Binding CancelCommand}" />
                 <Button Content="Rechnung ändern" Width="100" Margin="5" Command="{Binding ChangeCommand}" IsEnabled="{Binding AendernButton}"/>
@@ -67,23 +85,23 @@
             <ListView Grid.Column="2" ItemsSource="{Binding DocumentView}" Margin="10,50,10,0" Name="DocumentList" SelectionChanged="ListView_SelectionChanged" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Document number" DisplayMemberBinding="{Binding DocumentNumber}" Width="150"/>
-                        <GridViewColumn Header="Creation date" DisplayMemberBinding="{Binding CreationDateString}" Width="150"/>
+                        <GridViewColumn Header="Document number" DisplayMemberBinding="{Binding DocumentNumber}" Width="110"/>
+                        <GridViewColumn Header="Creation date" DisplayMemberBinding="{Binding CreationDateString}" Width="100"/>
                         <GridViewColumn Header="Floor"  DisplayMemberBinding="{Binding Location.Floor}" Width="50"/>
-                        <GridViewColumn Header="Room number"  DisplayMemberBinding="{Binding Location.RoomNumber}" Width="70"/>
-                        <GridViewColumn Header="Shelf number"  DisplayMemberBinding="{Binding Location.ShelfNumber}" Width="75"/>
+                        <GridViewColumn Header="Room number"  DisplayMemberBinding="{Binding Location.RoomNumber}" Width="80"/>
+                        <GridViewColumn Header="Shelf number"  DisplayMemberBinding="{Binding Location.ShelfNumber}" Width="85"/>
                         <GridViewColumn Header="Shelf compartment"  DisplayMemberBinding="{Binding Location.Shelf}" Width="110"/>
-                        <GridViewColumn Header="Responsible person" DisplayMemberBinding="{Binding Person.Name}" Width="100"/>
-                        <GridViewColumn Header="Office number" DisplayMemberBinding="{Binding Person.OfficeNumber}" Width="75"/>
+                        <GridViewColumn Header="Responsible person" DisplayMemberBinding="{Binding Person.Name}" Width="110"/>
+                        <GridViewColumn Header="Office number" DisplayMemberBinding="{Binding Person.OfficeNumber}" Width="80"/>
                         <GridViewColumn Header="Department" DisplayMemberBinding="{Binding Person.Department}" Width="75"/>
                         <GridViewColumn Header="Brief description" DisplayMemberBinding="{Binding BriefDescription}" Width="200"/>
                     </GridView>
                 </ListView.View>
             </ListView>
             <StackPanel Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" Orientation="Horizontal" Margin="15,15,5,15">
-                <Button  Content="{Binding Sortieren}" Width="100" Margin="5" Command="{Binding SortCommand}"/>
-                <Button  Content="Rechnung auswählen" Width="100" Margin="5" Command="{Binding SelectCommand}"/>
-                <Button  Content="Suchen" Width="100" Margin="5" Command="{Binding SearchCommand}"/>
+                <Button Content="{Binding Sortieren}" Width="100" Margin="5" Command="{Binding SortCommand}"/>
+                <Button Content="Rechnung auswählen" Width="100" Margin="5" Command="{Binding SelectCommand}"/>
+                <Button Content="Suchen" Width="100" Margin="5" Command="{Binding SearchCommand}"/>
                 <TextBox TextAlignment="Left" Padding="10" VerticalAlignment="Top" Width="100" Text="{Binding DocumentSearch}"/>
             </StackPanel>
         </Grid>
