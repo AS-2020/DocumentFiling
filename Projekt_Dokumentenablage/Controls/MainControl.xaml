@@ -1,0 +1,91 @@
+﻿<UserControl x:Class="Projekt_Dokumentenablage.Controls.MainControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Projekt_Dokumentenablage.Controls"
+             xmlns:vm="clr-namespace:Projekt_Dokumentenablage.ViewModels"
+             xmlns:converter="clr-namespace:Projekt_Dokumentenablage.Converter"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="1200">
+    <UserControl.DataContext>
+        <vm:MainVM ></vm:MainVM>
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <converter:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+    </UserControl.Resources>
+    <Grid >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1,15*"></ColumnDefinition>
+            <ColumnDefinition Width="5"></ColumnDefinition>
+            <ColumnDefinition Width="1,85*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid Margin="10,10,10,30">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Viewbox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
+                <TextBlock Text="Document" FontWeight="Bold" FontSize="32"/>
+            </Viewbox>
+            <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Document number" Grid.Row="1"/>
+            <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Creation date" Grid.Row="2"/>
+            <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Location" Grid.Row="3"/>
+            <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Person" Grid.Row="4"/>
+            <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Brief description" Grid.Row="5"/>
+            <TextBlock Text="" Grid.Row="6"/>
+            <TextBox Text="{Binding DocumentNumber}" Grid.Row="1" Grid.Column="1" IsReadOnly="{Binding RechnungsNummerTextBox}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <TextBox Text="{Binding CreationDate}" Grid.Row="2" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <TextBox Text="{Binding Location}" Grid.RowSpan="2" Grid.Row="3" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <TextBox Text="{Binding Person}" Grid.Row="5" Grid.RowSpan="2" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <TextBox Text="{Binding BriefDescription}" Grid.Row="7" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="7" Grid.ColumnSpan="2">
+                <Button Content="Speichern" Width="100" Margin="5" Command="{Binding SaveCommand}" IsEnabled="{Binding AendernButton, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"/>
+                <Button Content="Verwerfen" Width="100" Margin="5" Command="{Binding CancelCommand}" />
+                <Button Content="Rechnung ändern" Width="100" Margin="5" Command="{Binding ChangeCommand}" IsEnabled="{Binding AendernButton}"/>
+                <Button Content="Beenden" Width="100" Margin="5" Command="{Binding ExitCommand}" />
+            </StackPanel>
+        </Grid>
+        <Rectangle Fill="Gray" Grid.Column="1" />
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="2" Grid.Row="0" TextAlignment="Center" Text="Documents" Padding="10" FontWeight="Bold" VerticalAlignment="Top" FontSize="32"/>
+            <ListView Grid.Column="2" ItemsSource="{Binding DocumentView}" Margin="10,50,10,0" Name="DocumentList" SelectionChanged="ListView_SelectionChanged" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Document number" DisplayMemberBinding="{Binding DocumentNumber}" Width="150"/>
+                        <GridViewColumn Header="Creation date" DisplayMemberBinding="{Binding CreationDateString}" Width="150"/>
+                        <GridViewColumn Header="Floor"  DisplayMemberBinding="{Binding Location.Floor}" Width="50"/>
+                        <GridViewColumn Header="Room number"  DisplayMemberBinding="{Binding Location.RoomNumber}" Width="70"/>
+                        <GridViewColumn Header="Shelf number"  DisplayMemberBinding="{Binding Location.ShelfNumber}" Width="75"/>
+                        <GridViewColumn Header="Shelf compartment"  DisplayMemberBinding="{Binding Location.Shelf}" Width="110"/>
+                        <GridViewColumn Header="Responsible person" DisplayMemberBinding="{Binding Person.Name}" Width="100"/>
+                        <GridViewColumn Header="Office number" DisplayMemberBinding="{Binding Person.OfficeNumber}" Width="75"/>
+                        <GridViewColumn Header="Department" DisplayMemberBinding="{Binding Person.Department}" Width="75"/>
+                        <GridViewColumn Header="Brief description" DisplayMemberBinding="{Binding BriefDescription}" Width="200"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <StackPanel Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" Orientation="Horizontal" Margin="15,15,5,15">
+                <Button  Content="{Binding Sortieren}" Width="100" Margin="5" Command="{Binding SortCommand}"/>
+                <Button  Content="Rechnung auswählen" Width="100" Margin="5" Command="{Binding SelectCommand}"/>
+                <Button  Content="Suchen" Width="100" Margin="5" Command="{Binding SearchCommand}"/>
+                <TextBox TextAlignment="Left" Padding="10" VerticalAlignment="Top" Width="100" Text="{Binding DocumentSearch}"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>
