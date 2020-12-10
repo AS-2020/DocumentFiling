@@ -71,9 +71,16 @@
     <Compile Include="ViewModels\ActualMainVM.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\MainVM.cs" />
-    <Compile Include="ViewModels\PasswordRequestViewModel.cs" />
+    <Compile Include="ViewModels\NewLocationVM.cs" />
+    <Compile Include="ViewModels\NewPersonVM.cs" />
     <Compile Include="View\DocumentFilingView.xaml.cs">
       <DependentUpon>DocumentFilingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\NewLocationView.xaml.cs">
+      <DependentUpon>NewLocationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\NewPersonView.xaml.cs">
+      <DependentUpon>NewPersonView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\PasswordRequest.xaml.cs">
       <DependentUpon>PasswordRequest.xaml</DependentUpon>
@@ -99,6 +106,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\DocumentFilingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\NewLocationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\NewPersonView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

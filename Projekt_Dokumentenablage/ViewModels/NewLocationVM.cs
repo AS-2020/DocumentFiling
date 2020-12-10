@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Projekt_Dokumentenablage.ViewModels
 {
-    class PasswordRequestViewModel : BaseViewModel
+    class NewLocationVM
     {
     }
 }

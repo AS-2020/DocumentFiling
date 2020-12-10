@@ -48,7 +48,7 @@ namespace Projekt_Dokumentenablage.Models
         {
             return persons;
         }
-        public void RemoveStorageLocation(ResponsiblePerson responsiblePerson)
+        public void RemoveResponsiblePerson(ResponsiblePerson responsiblePerson)
         {
             persons.Remove(responsiblePerson);
         }
@@ -63,7 +63,7 @@ namespace Projekt_Dokumentenablage.Models
             con.Open();
             SqlCommand com = new SqlCommand();
 
-            string sql = $"Insert into responsiblePerson values ({responsiblePerson.Name}, '{responsiblePerson.OfficeNumber}', '{responsiblePerson.Department}')";
+            string sql = $"Insert into responsiblePerson values ('{responsiblePerson.Name}', '{responsiblePerson.OfficeNumber}', '{responsiblePerson.Department}')";
             com = new SqlCommand(sql, con);
             SqlDataAdapter adapter = new SqlDataAdapter();
 
@@ -101,24 +101,23 @@ namespace Projekt_Dokumentenablage.Models
             con.Close();
         }
 
-        //public void Change(ResponsiblePerson responsiblePerson, bool[] geandert)
-        //{
-        //    SqlConnection con = new SqlConnection(VERBINDUNG);
+        public void Change(ResponsiblePerson r, bool[] geandert)
+        {
+            SqlConnection con = new SqlConnection(VERBINDUNG);
 
-        //    con.Open();
+            con.Open();
 
-        //    string sql = $@"Update responsiblePerson set {(geandert[0] ? $"DatumFaelligkeit = '{r.DatumFaelligkeit}'" : "")}{((geandert[0] && geandert[1] | geandert[2] | geandert[3]) ? "," : "")}" +
-        //        $"{(geandert[1] ? $"Kundennummer = '{r.KundenNummer}'" : "")}{((geandert[1] && geandert[2] | geandert[3]) ? "," : "")}" +
-        //        $"{ (geandert[2] ? $"Summe = '{summemitpunkt}'" : "")}{((geandert[2] && geandert[3]) ? "," : "")}" +
-        //        $"{ (geandert[3] ? $"DatumBegleichung = '{r.DatumBegleichung}'" : "")} where Rechnungsnummer = '{r.RechnungsNummer}'";
-        //    SqlCommand com = new SqlCommand(sql, con);
-        //    SqlDataAdapter adapter = new SqlDataAdapter();
+            string sql = $@"Update responsiblePerson set {(geandert[0] ? $"PersonName = '{r.Name}'" : "")}{((geandert[0] && geandert[1] | geandert[2]) ? "," : "")}" +
+                $"{(geandert[1] ? $"OfficeNumber = '{r.OfficeNumber}'" : "")}{((geandert[1] && geandert[2]) ? "," : "")}" +
+                $"{ (geandert[2] ? $"Department = '{r.Department}'" : "")}{((geandert[2]) ? "," : "")} where PersonID = '{r.PersonID}'";
+            SqlCommand com = new SqlCommand(sql, con);
+            SqlDataAdapter adapter = new SqlDataAdapter();
 
-        //    adapter.UpdateCommand = com;
-        //    adapter.UpdateCommand.ExecuteNonQuery();
+            adapter.UpdateCommand = com;
+            adapter.UpdateCommand.ExecuteNonQuery();
 
-        //    com.Dispose();
-        //    con.Close();
-        //}
+            com.Dispose();
+            con.Close();
+        }
     }
 }

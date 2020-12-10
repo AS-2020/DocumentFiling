@@ -6,12 +6,5 @@
              xmlns:vm="clr-namespace:Projekt_Dokumentenablage.ViewModels"
              xmlns:views="clr-namespace:Projekt_Dokumentenablage.View"
              StartupUri="MainWindow.xaml">
-    <Application.Resources>
-        <DataTemplate DataType="{x:Type vm:PasswordRequestViewModel}">
-            <controls:PasswordRequestControl/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:MainVM}">
-            <controls:MainControl/>
-        </DataTemplate>
-    </Application.Resources>
+
 </Application>

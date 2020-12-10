@@ -40,11 +40,10 @@
             <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Document number" Grid.Row="1"/>
             <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Creation date" Grid.Row="2"/>
             <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Storage location" Grid.Row="3"/>
-            <Button Content="create new" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4"/>
+            <Button Content="create new" Command="{Binding NewLocation}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4"/>
             <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Responsible person" Grid.Row="5"/>
-            <Button Content="create new" Command="{Binding }" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="6"/>
+            <Button Content="create new" Command="{Binding NewPerson}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="6"/>
             <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Brief description" Grid.Row="7"/>
-            <TextBlock Text="" Grid.Row="6"/>
             <TextBox Text="{Binding DocumentNumber}" Grid.Row="1" Grid.Column="1" IsReadOnly="{Binding RechnungsNummerTextBox}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             <TextBox Text="{Binding CreationDate}" Grid.Row="2" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             <Grid Grid.Row="3" Grid.RowSpan="4" Grid.Column="1">

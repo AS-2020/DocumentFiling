@@ -291,6 +291,9 @@ namespace Projekt_Dokumentenablage.ViewModels
         public RelayCommand SearchCommand { get; set; }
         public RelayCommand SortCommand { get; set; }
         public RelayCommand Login { get; set; }
+        public RelayCommand NewLocation { get; set; }
+        public RelayCommand NewPerson { get; set; }
+
         public void Cancel(object o)
         {
             DocumentNumber = 0;
@@ -357,16 +360,26 @@ namespace Projekt_Dokumentenablage.ViewModels
             }
 
 
-            Login = new RelayCommand((o) =>
+            NewLocation = new RelayCommand((o) =>
             {
-                Window start = new DocumentFilingView();
+
+                Window start = new NewLocationView();
                 start.ShowDialog();
+
+            });
+            
+            NewPerson = new RelayCommand((o) =>
+            {
+
+                Window start = new NewPersonView();
+                start.ShowDialog();
+
             });
 
             SaveCommand = new RelayCommand((o) =>
             {
                 Document vorhanden = DocumentHandler.Instance.GetDocument().Find(r => r.DocumentNumber == documentNumber);
-                if (vorhanden == null && documentNumber > 0 && Location != null && StorageLocationHandler.Instance.GetStorageLocations().Find(l => l == Location) != null 
+                if (vorhanden == null && documentNumber > 0 && Location != null && StorageLocationHandler.Instance.GetStorageLocations().Find(l => l == Location) != null
                 && Person != null && ResponsiblePersonHandler.Instance.GetResponsiblePerson().Find(p => p == Person) != null)
                 {
                     Document d = new Document()

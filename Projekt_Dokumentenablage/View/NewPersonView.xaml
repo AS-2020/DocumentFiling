@@ -1,0 +1,74 @@
+﻿<Window x:Class="Projekt_Dokumentenablage.View.NewPersonView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Projekt_Dokumentenablage.View" xmlns:converter="clr-namespace:Projekt_Dokumentenablage.Converter" xmlns:vm="clr-namespace:Projekt_Dokumentenablage.ViewModels"
+        mc:Ignorable="d"
+        Title="NewPersonView" Height="450" Width="800">
+    <Window.DataContext>
+        <vm:NewPersonVM ChangeButton="false" Sort="Sort"></vm:NewPersonVM>
+    </Window.DataContext>
+    <Window.Resources>
+        <converter:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+    </Window.Resources>
+    <Grid >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1,15*"></ColumnDefinition>
+            <ColumnDefinition Width="5"></ColumnDefinition>
+            <ColumnDefinition Width="1,85*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid Margin="10,10,10,30">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Viewbox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
+                <TextBlock Text="Add responsible Person" FontWeight="Bold" FontSize="32"/>
+            </Viewbox>
+            <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Name" Grid.Row="1"/>
+            <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Office number" Grid.Row="2"/>
+            <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Department" Grid.Row="3"/>
+            <TextBlock Text="" Grid.Row="6"/>
+            <TextBox Text="{Binding Name}" Grid.Row="1" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <TextBox Text="{Binding OfficeNumber}" Grid.Row="2" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <TextBox Text="{Binding Department}" Grid.Row="3" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="7" Grid.ColumnSpan="2">
+                <Button Content="Speichern" Width="100" Margin="5" Command="{Binding SaveCommand}" IsEnabled="{Binding ChangeButton, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"/>
+                <Button Content="Verwerfen" Width="100" Margin="5" Command="{Binding CancelCommand}" />
+                <Button Content="Rechnung ändern" Width="100" Margin="5" Command="{Binding ChangeCommand}" IsEnabled="{Binding ChangeButton}"/>
+                <Button Content="Beenden" Width="100" Margin="5" Command="{Binding ExitCommand}" />
+            </StackPanel>
+        </Grid>
+        <Rectangle Fill="Gray" Grid.Column="1" />
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="2" Grid.Row="0" TextAlignment="Center" Text="employees" Padding="10" FontWeight="Bold" VerticalAlignment="Top" FontSize="32"/>
+            <ListView Grid.Column="2" ItemsSource="{Binding Persons}" Margin="10,50,10,0" Name="PersonsList" SelectionChanged="ListView_SelectionChanged">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="150"/>
+                        <GridViewColumn Header="Office number" DisplayMemberBinding="{Binding OfficeNumber}" Width="150"/>
+                        <GridViewColumn Header="Department" DisplayMemberBinding="{Binding Department}" Width="150"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <StackPanel Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" Orientation="Horizontal" Margin="15,15,5,15">
+                <Button  Content="{Binding Sort}" Width="100" Margin="5" Command="{Binding SortCommand}"/>
+                <Button  Content="Select employee" Width="100" Margin="5" Command="{Binding SelectCommand}"/>
+                <Button  Content="Search" Width="100" Margin="5" Command="{Binding SearchCommand}"/>
+                <TextBox TextAlignment="Left" Padding="10" VerticalAlignment="Top" Width="100" Text="{Binding SearchPerson}"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
