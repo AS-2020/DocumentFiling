@@ -8,16 +8,15 @@ using System.Windows.Input;
 
 namespace Projekt_Dokumentenablage.Helper
 {
-    public class RelayCommand : ICommand
+    public class UpdateViewCommand : ICommand
     {
+        private ActualMainVM viewModel;
 
         public event EventHandler CanExecuteChanged;
 
-        private Action<object> _execute;
-
-        public RelayCommand(Action<object> execute)
+        public UpdateViewCommand(ActualMainVM viewModel)
         {
-            _execute = execute;
+            this.viewModel = viewModel;
         }
 
         public bool CanExecute(object parameter)
@@ -27,7 +26,10 @@ namespace Projekt_Dokumentenablage.Helper
 
         public void Execute(object parameter)
         {
-            _execute?.Invoke(parameter);
+            if (parameter.ToString() == "Start")
+            {
+                viewModel.SelectedViewModel = new MainVM();
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Projekt_Dokumentenablage.Helper;
 using Projekt_Dokumentenablage.Models;
+using Projekt_Dokumentenablage.View;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,7 +12,7 @@ using System.Windows;
 
 namespace Projekt_Dokumentenablage.ViewModels
 {
-    class MainVM : INotifyPropertyChanged
+    class MainVM : BaseViewModel, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -37,6 +38,82 @@ namespace Projekt_Dokumentenablage.ViewModels
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("LocationsView"));
             }
         }
+
+        private ObservableCollection<string> floorSelect = new ObservableCollection<string>();
+        public ObservableCollection<string> FloorSelect
+        {
+            get { return floorSelect; }
+            set
+            {
+                floorSelect = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("FloorSelect"));
+            }
+        }
+        private ObservableCollection<string> roomSelect = new ObservableCollection<string>();
+        public ObservableCollection<string> RoomSelect
+        {
+            get { return roomSelect; }
+            set
+            {
+                roomSelect = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RoomSelect"));
+            }
+        }
+        private ObservableCollection<string> shelfNumberSelect = new ObservableCollection<string>();
+        public ObservableCollection<string> ShelfNumberSelect
+        {
+            get { return shelfNumberSelect; }
+            set
+            {
+                shelfNumberSelect = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ShelfNumberSelect"));
+            }
+        }
+        private ObservableCollection<string> shelfSelect = new ObservableCollection<string>();
+        public ObservableCollection<string> ShelfSelect
+        {
+            get { return shelfSelect; }
+            set
+            {
+                shelfSelect = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ShelfSelect"));
+            }
+        }
+
+        private ObservableCollection<string> nameSelect = new ObservableCollection<string>();
+        public ObservableCollection<string> NameSelect
+        {
+            get { return nameSelect; }
+            set
+            {
+                nameSelect = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("NameSelect"));
+            }
+        }
+
+        private ObservableCollection<string> officeNumberSelect = new ObservableCollection<string>();
+        public ObservableCollection<string> OfficeNumberSelect
+        {
+            get { return officeNumberSelect; }
+            set
+            {
+                officeNumberSelect = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("OfficeNumberSelect"));
+            }
+        }
+
+        private ObservableCollection<string> departmentSelect = new ObservableCollection<string>();
+        public ObservableCollection<string> DepartmentSelect
+        {
+            get { return departmentSelect; }
+            set
+            {
+                departmentSelect = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DepartmentSelect"));
+            }
+        }
+
+
 
         private bool _rechnungsNummerTextBox;
         public bool RechnungsNummerTextBox
@@ -213,12 +290,18 @@ namespace Projekt_Dokumentenablage.ViewModels
         public RelayCommand SelectCommand { get; set; }
         public RelayCommand SearchCommand { get; set; }
         public RelayCommand SortCommand { get; set; }
+        public RelayCommand Login { get; set; }
         public void Cancel(object o)
         {
             DocumentNumber = 0;
             CreationDate = null;
-            Location = null;
-            Person = null;
+            Floor = null;
+            RoomNumber = null;
+            ShelfNumber = null;
+            Shelf = null;
+            Name = null;
+            OfficeNumber = null;
+            Department = null;
             BriefDescription = null;
             AendernButton = false;
             RechnungsNummerTextBox = false;
@@ -236,8 +319,13 @@ namespace Projekt_Dokumentenablage.ViewModels
                 Document d = SelectedDocument.Last<Document>();
                 DocumentNumber = d.DocumentNumber;
                 CreationDate = d.CreationDate.ToShortDateString();
-                Location = d.Location;
-                Person = d.Person;
+                Floor = d.Location.Floor;
+                RoomNumber = d.Location.RoomNumber;
+                ShelfNumber = d.Location.ShelfNumber;
+                Shelf = d.Location.Shelf;
+                Name = d.Person.Name;
+                OfficeNumber = d.Person.OfficeNumber;
+                Department = d.Person.Department;
                 BriefDescription = d.BriefDescription;
                 AendernButton = true;
                 RechnungsNummerTextBox = true;
@@ -245,22 +333,40 @@ namespace Projekt_Dokumentenablage.ViewModels
             }
             catch (System.ArgumentNullException)
             {
-
                 MessageBox.Show("No document selected");
             }
         }
 
+
         public MainVM()
         {
             StorageLocationHandler.Instance.Load();
+            locationsView = new ObservableCollection<StorageLocation>(StorageLocationHandler.Instance.GetStorageLocations());
             ResponsiblePersonHandler.Instance.Load();
             DocumentHandler.Instance.Load();
             documentsView = new ObservableCollection<Document>(DocumentHandler.Instance.GetDocument().OrderBy(r => r.DocumentNumber));
 
+            foreach (var item in StorageLocationHandler.Instance.GetStorageLocations())
+            {
+                FloorSelect.Add(item.Floor);
+            }
+
+            foreach (var item in ResponsiblePersonHandler.Instance.GetResponsiblePerson())
+            {
+                NameSelect.Add(item.Name);
+            }
+
+
+            Login = new RelayCommand((o) =>
+            {
+                Window start = new DocumentFilingView();
+                start.ShowDialog();
+            });
+
             SaveCommand = new RelayCommand((o) =>
             {
                 Document vorhanden = DocumentHandler.Instance.GetDocument().Find(r => r.DocumentNumber == documentNumber);
-                if (vorhanden == null && documentNumber > 0 && Location != null && StorageLocationHandler.Instance.GetStorageLocations().Find(l => l == Location) != null
+                if (vorhanden == null && documentNumber > 0 && Location != null && StorageLocationHandler.Instance.GetStorageLocations().Find(l => l == Location) != null 
                 && Person != null && ResponsiblePersonHandler.Instance.GetResponsiblePerson().Find(p => p == Person) != null)
                 {
                     Document d = new Document()

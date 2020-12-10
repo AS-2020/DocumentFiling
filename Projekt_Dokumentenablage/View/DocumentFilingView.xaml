@@ -1,19 +1,17 @@
-﻿<UserControl x:Class="Projekt_Dokumentenablage.Controls.MainControl"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Projekt_Dokumentenablage.Controls"
-             xmlns:vm="clr-namespace:Projekt_Dokumentenablage.ViewModels"
-             xmlns:converter="clr-namespace:Projekt_Dokumentenablage.Converter"
-             mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="1200">
-    <UserControl.DataContext>
+﻿<Window x:Class="Projekt_Dokumentenablage.View.DocumentFilingView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Projekt_Dokumentenablage.View" xmlns:vm="clr-namespace:Projekt_Dokumentenablage.ViewModels" xmlns:converter="clr-namespace:Projekt_Dokumentenablage.Converter"
+        mc:Ignorable="d"
+        Title="DocumentFilingView" Height="550" Width="1700" MinHeight="550" MinWidth="1700">
+    <Window.DataContext>
         <vm:MainVM ></vm:MainVM>
-    </UserControl.DataContext>
-    <UserControl.Resources>
+    </Window.DataContext>
+    <Window.Resources>
         <converter:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
-    </UserControl.Resources>
+    </Window.Resources>
     <Grid >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1,15*"></ColumnDefinition>
@@ -41,8 +39,10 @@
             </Viewbox>
             <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Document number" Grid.Row="1"/>
             <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Creation date" Grid.Row="2"/>
-            <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Location" Grid.Row="3" Grid.RowSpan="2"/>
-            <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Person" Grid.Row="5" Grid.RowSpan="2"/>
+            <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Storage location" Grid.Row="3"/>
+            <Button Content="create new" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4"/>
+            <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Responsible person" Grid.Row="5"/>
+            <Button Content="create new" Command="{Binding }" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="6"/>
             <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Brief description" Grid.Row="7"/>
             <TextBlock Text="" Grid.Row="6"/>
             <TextBox Text="{Binding DocumentNumber}" Grid.Row="1" Grid.Column="1" IsReadOnly="{Binding RechnungsNummerTextBox}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
@@ -58,14 +58,13 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <ComboBox Text="{Binding Location}"  Grid.Row="0" Grid.Column="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <TextBox Text="{Binding Location}" Grid.Row="0" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <TextBox Text="{Binding Location}" Grid.Row="1" Grid.Column="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <TextBox Text="{Binding Location}" Grid.Row="1" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <TextBox Text="{Binding Person}"  Grid.Row="2" Grid.Column="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <TextBox Text="{Binding Person}" Grid.Row="2" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <TextBox Text="{Binding Person}" Grid.Row="3" Grid.Column="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <TextBox Text="{Binding Person}" Grid.Row="3" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <ComboBox SelectedItem="{Binding Floor}" SelectionChanged="FloorSelected" ItemsSource="{Binding FloorSelect}" Grid.Row="0" Grid.Column="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <ComboBox SelectedItem="{Binding RoomNumber}" SelectionChanged="RoomSelected" Grid.Row="0" Grid.Column="1" ItemsSource="{Binding RoomSelect}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <ComboBox SelectedItem="{Binding ShelfNumber}" SelectionChanged="ShelfNumberSelected" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding ShelfNumberSelect}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <ComboBox SelectedItem="{Binding Shelf}" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding ShelfSelect}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <ComboBox SelectedItem="{Binding Name}" Grid.Row="2" SelectionChanged="NameSelected" Grid.ColumnSpan="2" ItemsSource="{Binding NameSelect}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <ComboBox SelectedItem="{Binding OfficeNumber}" Grid.Row="3" SelectionChanged="OfficeNumberSelected" Grid.Column="0" ItemsSource="{Binding OfficeNumberSelect}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <ComboBox SelectedItem="{Binding Department}" Grid.Row="3" Grid.Column="1" ItemsSource="{Binding DepartmentSelect}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             </Grid>
             <TextBox Text="{Binding BriefDescription}" Grid.Row="7" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="8" Grid.ColumnSpan="2">
@@ -106,4 +105,4 @@
             </StackPanel>
         </Grid>
     </Grid>
-</UserControl>
+</Window>
