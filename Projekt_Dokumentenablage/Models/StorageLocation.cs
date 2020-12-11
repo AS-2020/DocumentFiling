@@ -129,24 +129,24 @@ namespace Projekt_Dokumentenablage.Models
             con.Close();
         }
 
-        //public void Change(StorageLocation storageLocation, bool[] geandert)
-        //{
-        //    SqlConnection con = new SqlConnection(VERBINDUNG);
+        public void Change(StorageLocation r, bool[] geandert)
+        {
+            SqlConnection con = new SqlConnection(VERBINDUNG);
 
-        //    con.Open();
+            con.Open();
 
-        //    string sql = $@"Update storageLocation set {(geandert[0] ? $"DatumFaelligkeit = '{r.DatumFaelligkeit}'" : "")}{((geandert[0] && geandert[1] | geandert[2] | geandert[3]) ? "," : "")}" +
-        //        $"{(geandert[1] ? $"Kundennummer = '{r.KundenNummer}'" : "")}{((geandert[1] && geandert[2] | geandert[3]) ? "," : "")}" +
-        //        $"{ (geandert[2] ? $"Summe = '{summemitpunkt}'" : "")}{((geandert[2] && geandert[3]) ? "," : "")}" +
-        //        $"{ (geandert[3] ? $"DatumBegleichung = '{r.DatumBegleichung}'" : "")} where Rechnungsnummer = '{r.RechnungsNummer}'";
-        //    SqlCommand com = new SqlCommand(sql, con);
-        //    SqlDataAdapter adapter = new SqlDataAdapter();
+            string sql = $@"Update storageLocation set {(geandert[0] ? $"BuildingFloor = '{r.Floor}'" : "")}{((geandert[0] && geandert[1] | geandert[2] | geandert[3]) ? "," : "")}" +
+                $"{(geandert[1] ? $"RoomNumber = '{r.RoomNumber}'" : "")}{((geandert[1] && geandert[2] | geandert[3]) ? "," : "")}" +
+                $"{ (geandert[2] ? $"ShelfNumber = '{r.ShelfNumber}'" : "")}{((geandert[2] && geandert[3]) ? "," : "")}" +
+                $"{ (geandert[3] ? $"Shelf = '{r.Shelf}'" : "")} where LocationID = '{r.LocationID}'";
+            SqlCommand com = new SqlCommand(sql, con);
+            SqlDataAdapter adapter = new SqlDataAdapter();
 
-        //    adapter.UpdateCommand = com;
-        //    adapter.UpdateCommand.ExecuteNonQuery();
+            adapter.UpdateCommand = com;
+            adapter.UpdateCommand.ExecuteNonQuery();
 
-        //    com.Dispose();
-        //    con.Close();
-        //}
+            com.Dispose();
+            con.Close();
+        }
     }
 }

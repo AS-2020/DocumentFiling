@@ -138,11 +138,12 @@ namespace Projekt_Dokumentenablage.ViewModels
             Environment.Exit(0);
         }
 
-        public void SelectRechnung(object o)
+        public void SelectPerson(object o)
         {
             try
             {
                 ResponsiblePerson p = SelectedPerson.Last<ResponsiblePerson>();
+                PersonID = p.PersonID;
                 Name = p.Name;
                 OfficeNumber = p.OfficeNumber;
                 Department = p.Department;
@@ -167,16 +168,16 @@ namespace Projekt_Dokumentenablage.ViewModels
                 ResponsiblePerson vorhanden = ResponsiblePersonHandler.Instance.GetResponsiblePerson().Find(r => r.Name == Name && r.OfficeNumber == OfficeNumber && r.Department == Department);
                 if (vorhanden == null && Name != null && OfficeNumber != null && Department != null)
                 {
-                    ResponsiblePerson r = new ResponsiblePerson();
+                    ResponsiblePerson r = new ResponsiblePerson()
                     {
-                        Name = Name;
-                        OfficeNumber = OfficeNumber;
-                        Department = Department;
-                        ResponsiblePersonHandler.Instance.AddResponsiblePerson(r);
-                        Persons.Add(r);
-                        ResponsiblePersonHandler.Instance.Save(r);
-                        Cancel(o);
+                        Name = Name,
+                        OfficeNumber = OfficeNumber,
+                        Department = Department
                     };
+                    ResponsiblePersonHandler.Instance.AddResponsiblePerson(r);
+                    Persons.Add(r);
+                    ResponsiblePersonHandler.Instance.Save(r);
+                    Cancel(o);
 
                 }
                 else if (vorhanden != null)
@@ -202,9 +203,9 @@ namespace Projekt_Dokumentenablage.ViewModels
             ExitCommand = new RelayCommand(Exit);
 
             SearchCommand = new RelayCommand((o) =>
-            {
-                Persons = new ObservableCollection<ResponsiblePerson>(ResponsiblePersonHandler.Instance.GetResponsiblePerson().FindAll(r => r.Name.Contains(Name)));
-            });
+                {
+                    Persons = new ObservableCollection<ResponsiblePerson>(ResponsiblePersonHandler.Instance.GetResponsiblePerson().FindAll(r => r.Name.ToLower().Contains(SearchPerson.ToLower())));
+                });
 
             SortCommand = new RelayCommand((o) =>
             {
@@ -220,57 +221,66 @@ namespace Projekt_Dokumentenablage.ViewModels
                 }
             });
 
-            SelectCommand = new RelayCommand(SelectRechnung);
+            SelectCommand = new RelayCommand(SelectPerson);
 
             ChangeCommand = new RelayCommand((o) =>
-            {
-                bool[] geandert = new bool[3] { false, false, false};
-                ResponsiblePerson vorhanden = ResponsiblePersonHandler.Instance.GetResponsiblePerson().Find(r => r.Name == Name && r.OfficeNumber == OfficeNumber && r.Department == Department);
-                if (Name != null && OfficeNumber != null && Department != null)
                 {
-                    ResponsiblePerson r = new ResponsiblePerson()
+                    bool[] geandert = new bool[3] { false, false, false };
+                    ResponsiblePerson vorhanden = ResponsiblePersonHandler.Instance.GetResponsiblePerson().Find(r => r.PersonID == PersonID);
+                    if (Name != null && OfficeNumber != null && Department != null)
                     {
-                        PersonID = PersonID,
-                        Name = Name,
-                        OfficeNumber = OfficeNumber,
-                        Department = Department
-                    };
-                    if (r.Name != vorhanden.Name)
-                    {
-                        geandert[0] = true;
-                    }
-                    if (r.OfficeNumber != vorhanden.OfficeNumber)
-                    {
-                        geandert[1] = true;
-                    }
-                    if (r.Department != vorhanden.Department)
-                    {
-                        geandert[2] = true;
-                    }
+                        ResponsiblePerson r = new ResponsiblePerson()
+                        {
+                            PersonID = vorhanden.PersonID,
+                            Name = Name,
+                            OfficeNumber = OfficeNumber,
+                            Department = Department
+                        };
+                        if (vorhanden != null)
+                        {
+                            if (vorhanden.Name == null || r.Name != vorhanden.Name)
+                            {
+                                geandert[0] = true;
+                            }
+                            if (vorhanden.OfficeNumber == null || r.OfficeNumber != vorhanden.OfficeNumber)
+                            {
+                                geandert[1] = true;
+                            }
+                            if (vorhanden.Department == null || r.Department != vorhanden.Department)
+                            {
+                                geandert[2] = true;
+                            }
+                        }
+                        else
+                        {
+                            geandert[0] = true;
+                            geandert[1] = true;
+                            geandert[2] = true;
+                        }
 
-                    ResponsiblePersonHandler.Instance.RemoveResponsiblePerson(vorhanden);
-                    ResponsiblePersonHandler.Instance.AddResponsiblePerson(r);
-                    ResponsiblePersonHandler.Instance.Change(r, geandert);
-                    Persons = new ObservableCollection<ResponsiblePerson>(ResponsiblePersonHandler.Instance.GetResponsiblePerson().OrderBy(re => re.Name));
-                    Cancel(o);
-                }
-                else if (vorhanden == null)
-                {
-                    MessageBox.Show("This person does not exists");
-                }
-                else if (Name == null)
-                {
-                    MessageBox.Show("Enter a name");
-                }
-                else if (OfficeNumber == null)
-                {
-                    MessageBox.Show("Enter the office Number");
-                }
-                else if (Department == null)
-                {
-                    MessageBox.Show($"Enter the department");
-                }
-            });
+                        ResponsiblePersonHandler.Instance.RemoveResponsiblePerson(vorhanden);
+                        ResponsiblePersonHandler.Instance.AddResponsiblePerson(r);
+                        ResponsiblePersonHandler.Instance.Change(r, geandert);
+                        Persons = new ObservableCollection<ResponsiblePerson>(ResponsiblePersonHandler.Instance.GetResponsiblePerson().OrderBy(re => re.Name));
+                        Cancel(o);
+                    }
+                    else if (vorhanden == null)
+                    {
+                        MessageBox.Show("This person does not exists");
+                    }
+                    else if (Name == null)
+                    {
+                        MessageBox.Show("Enter a name");
+                    }
+                    else if (OfficeNumber == null)
+                    {
+                        MessageBox.Show("Enter the office Number");
+                    }
+                    else if (Department == null)
+                    {
+                        MessageBox.Show($"Enter the department");
+                    }
+                });
         }
     }
 }

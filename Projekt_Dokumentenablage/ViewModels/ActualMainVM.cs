@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -76,6 +77,11 @@ namespace Projekt_Dokumentenablage.ViewModels
 
             Login = new RelayCommand((o) =>
             {
+                MD5 hash = MD5.Create();
+
+                var schluessel1 = hash.ComputeHash(Encoding.UTF8.GetBytes(Password));
+                Password = Convert.ToBase64String(schluessel1);
+
                 if (UserHandler.Instance.GetUsers().Find(u => u.UserName == UserName && u.Password == Password) != null)
                 {
                     Window start = new DocumentFilingView();
@@ -89,7 +95,5 @@ namespace Projekt_Dokumentenablage.ViewModels
 
             UpdatePage = new UpdateViewCommand(this);
         }
-
-
     }
 }

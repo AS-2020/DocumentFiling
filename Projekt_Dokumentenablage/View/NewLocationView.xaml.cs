@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Projekt_Dokumentenablage.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,12 @@ namespace Projekt_Dokumentenablage.View
         public NewLocationView()
         {
             InitializeComponent();
+        }
+
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var viewmodel = (NewLocationView)DataContext;
+            viewmodel.SelectedLocation = LocationList.SelectedItems.Cast<StorageLocation>().ToList();
         }
     }
 }

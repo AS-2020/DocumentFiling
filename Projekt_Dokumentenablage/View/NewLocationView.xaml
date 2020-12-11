@@ -3,10 +3,76 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Projekt_Dokumentenablage.View"
+        xmlns:local="clr-namespace:Projekt_Dokumentenablage.View" xmlns:vm="clr-namespace:Projekt_Dokumentenablage.ViewModels" xmlns:converter="clr-namespace:Projekt_Dokumentenablage.Converter"
         mc:Ignorable="d"
-        Title="NewLocationView" Height="450" Width="800">
-    <Grid>
-        
+        Title="Change/Add storage location" Height="450" Width="1200">
+    <Window.DataContext>
+        <vm:NewLocationVM ChangeButton="false" Sort="Sort"></vm:NewLocationVM>
+    </Window.DataContext>
+    <Window.Resources>
+        <converter:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+    </Window.Resources>
+    <Grid >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1,5*"></ColumnDefinition>
+            <ColumnDefinition Width="5"></ColumnDefinition>
+            <ColumnDefinition Width="1,5*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid Margin="10,10,10,30">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Viewbox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
+                <TextBlock Text="Add storage location" FontWeight="Bold" FontSize="32"/>
+            </Viewbox>
+            <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Floor" Grid.Row="1"/>
+            <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Room number" Grid.Row="2"/>
+            <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Shelf number" Grid.Row="3"/>
+            <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Shelf compartment" Grid.Row="4"/>
+            <TextBlock Text="" Grid.Row="6"/>
+            <TextBox Text="{Binding Floor}" Grid.Row="1" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <TextBox Text="{Binding RoomNumber}" Grid.Row="2" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <TextBox Text="{Binding ShelfNumber}" Grid.Row="3" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <TextBox Text="{Binding Shelf}" Grid.Row="4" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="5" Grid.ColumnSpan="2">
+                <Button Content="Save" Width="100" Margin="5" Command="{Binding SaveCommand}" IsEnabled="{Binding ChangeButton, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"/>
+                <Button Content="Cancel" Width="100" Margin="5" Command="{Binding CancelCommand}" />
+                <Button Content="Change employee" Width="100" Margin="5" Command="{Binding ChangeCommand}" IsEnabled="{Binding ChangeButton}"/>
+                <Button Content="Exit all" Width="100" Margin="5" Command="{Binding ExitCommand}" />
+            </StackPanel>
+        </Grid>
+        <Rectangle Fill="Gray" Grid.Column="1" />
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="2" Grid.Row="0" TextAlignment="Center" Text="employees" Padding="10" FontWeight="Bold" VerticalAlignment="Top" FontSize="32"/>
+            <ListView Grid.Column="2" ItemsSource="{Binding Locations}" Margin="10,50,10,0" Name="LocationList" SelectionChanged="ListView_SelectionChanged">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Floor" DisplayMemberBinding="{Binding Floor}" Width="150"/>
+                        <GridViewColumn Header="Room number" DisplayMemberBinding="{Binding RoomNumber}" Width="150"/>
+                        <GridViewColumn Header="Shelf number" DisplayMemberBinding="{Binding ShelfNumber}" Width="150"/>
+                        <GridViewColumn Header="Shelf compartment" DisplayMemberBinding="{Binding Shelf}" Width="150"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <StackPanel Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" Orientation="Horizontal" Margin="15,15,5,15">
+                <Button  Content="{Binding Sort}" Width="100" Margin="5" Command="{Binding SortCommand}"/>
+                <Button  Content="Select location" Width="100" Margin="5" Command="{Binding SelectCommand}"/>
+                <Button  Content="Search" Width="100" Margin="5" Command="{Binding SearchCommand}"/>
+                <TextBox TextAlignment="Left" Padding="10" VerticalAlignment="Top" Width="100" Text="{Binding SearchLocation}"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

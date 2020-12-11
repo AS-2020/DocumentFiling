@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Projekt_Dokumentenablage.View" xmlns:converter="clr-namespace:Projekt_Dokumentenablage.Converter" xmlns:vm="clr-namespace:Projekt_Dokumentenablage.ViewModels"
         mc:Ignorable="d"
-        Title="NewPersonView" Height="450" Width="800">
+        Title="Change/Add Employee" Height="450" Width="1200">
     <Window.DataContext>
         <vm:NewPersonVM ChangeButton="false" Sort="Sort"></vm:NewPersonVM>
     </Window.DataContext>
@@ -14,9 +14,9 @@
     </Window.Resources>
     <Grid >
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1,15*"></ColumnDefinition>
+            <ColumnDefinition Width="1,5*"></ColumnDefinition>
             <ColumnDefinition Width="5"></ColumnDefinition>
-            <ColumnDefinition Width="1,85*"></ColumnDefinition>
+            <ColumnDefinition Width="1,5*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid Margin="10,10,10,30">
             <Grid.RowDefinitions>
@@ -41,10 +41,10 @@
             <TextBox Text="{Binding OfficeNumber}" Grid.Row="2" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             <TextBox Text="{Binding Department}" Grid.Row="3" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="7" Grid.ColumnSpan="2">
-                <Button Content="Speichern" Width="100" Margin="5" Command="{Binding SaveCommand}" IsEnabled="{Binding ChangeButton, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"/>
-                <Button Content="Verwerfen" Width="100" Margin="5" Command="{Binding CancelCommand}" />
-                <Button Content="Rechnung ändern" Width="100" Margin="5" Command="{Binding ChangeCommand}" IsEnabled="{Binding ChangeButton}"/>
-                <Button Content="Beenden" Width="100" Margin="5" Command="{Binding ExitCommand}" />
+                <Button Content="Save" Width="100" Margin="5" Command="{Binding SaveCommand}" IsEnabled="{Binding ChangeButton, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"/>
+                <Button Content="Cancel" Width="100" Margin="5" Command="{Binding CancelCommand}" />
+                <Button Content="Change employee" Width="100" Margin="5" Command="{Binding ChangeCommand}" IsEnabled="{Binding ChangeButton}"/>
+                <Button Content="Exit all" Width="100" Margin="5" Command="{Binding ExitCommand}" />
             </StackPanel>
         </Grid>
         <Rectangle Fill="Gray" Grid.Column="1" />
