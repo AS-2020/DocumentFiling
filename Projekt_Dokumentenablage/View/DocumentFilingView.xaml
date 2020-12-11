@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Projekt_Dokumentenablage.View" xmlns:vm="clr-namespace:Projekt_Dokumentenablage.ViewModels" xmlns:converter="clr-namespace:Projekt_Dokumentenablage.Converter"
         mc:Ignorable="d"
-        Title="DocumentFilingView" Height="550" Width="1700" MinHeight="550" MinWidth="1700">
+        Title="Document Filing" Height="550" Width="1700" MinHeight="550" MinWidth="1700">
     <Window.DataContext>
         <vm:MainVM ></vm:MainVM>
     </Window.DataContext>
@@ -67,10 +67,10 @@
             </Grid>
             <TextBox Text="{Binding BriefDescription}" Grid.Row="7" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="8" Grid.ColumnSpan="2">
-                <Button Content="Speichern" Width="100" Margin="5" Command="{Binding SaveCommand}" IsEnabled="{Binding AendernButton, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"/>
-                <Button Content="Verwerfen" Width="100" Margin="5" Command="{Binding CancelCommand}" />
-                <Button Content="Rechnung ändern" Width="100" Margin="5" Command="{Binding ChangeCommand}" IsEnabled="{Binding AendernButton}"/>
-                <Button Content="Beenden" Width="100" Margin="5" Command="{Binding ExitCommand}" />
+                <Button Content="Save" Width="100" Margin="5" Command="{Binding SaveCommand}" IsEnabled="{Binding AendernButton, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"/>
+                <Button Content="Cancel" Width="100" Margin="5" Command="{Binding CancelCommand}" />
+                <Button Content="Change document" Width="100" Margin="5" Command="{Binding ChangeCommand}" IsEnabled="{Binding AendernButton}"/>
+                <Button Content="Exit" Width="100" Margin="5" Command="{Binding ExitCommand}" />
             </StackPanel>
         </Grid>
         <Rectangle Fill="Gray" Grid.Column="1" />
@@ -98,8 +98,8 @@
             </ListView>
             <StackPanel Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" Orientation="Horizontal" Margin="15,15,5,15">
                 <Button Content="{Binding Sortieren}" Width="100" Margin="5" Command="{Binding SortCommand}"/>
-                <Button Content="Rechnung auswählen" Width="100" Margin="5" Command="{Binding SelectCommand}"/>
-                <Button Content="Suchen" Width="100" Margin="5" Command="{Binding SearchCommand}"/>
+                <Button Content="Select document" Width="100" Margin="5" Command="{Binding SelectCommand}"/>
+                <Button Content="Search" Width="100" Margin="5" Command="{Binding SearchCommand}"/>
                 <TextBox TextAlignment="Left" Padding="10" VerticalAlignment="Top" Width="100" Text="{Binding DocumentSearch}"/>
             </StackPanel>
         </Grid>

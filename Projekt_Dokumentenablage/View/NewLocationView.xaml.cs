@@ -1,4 +1,5 @@
 ﻿using Projekt_Dokumentenablage.Models;
+using Projekt_Dokumentenablage.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace Projekt_Dokumentenablage.View
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var viewmodel = (NewLocationView)DataContext;
+            var viewmodel = (NewLocationVM)DataContext;
             viewmodel.SelectedLocation = LocationList.SelectedItems.Cast<StorageLocation>().ToList();
         }
     }

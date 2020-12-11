@@ -46,7 +46,7 @@
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="5" Grid.ColumnSpan="2">
                 <Button Content="Save" Width="100" Margin="5" Command="{Binding SaveCommand}" IsEnabled="{Binding ChangeButton, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"/>
                 <Button Content="Cancel" Width="100" Margin="5" Command="{Binding CancelCommand}" />
-                <Button Content="Change employee" Width="100" Margin="5" Command="{Binding ChangeCommand}" IsEnabled="{Binding ChangeButton}"/>
+                <Button Content="Change location" Width="100" Margin="5" Command="{Binding ChangeCommand}" IsEnabled="{Binding ChangeButton}"/>
                 <Button Content="Exit all" Width="100" Margin="5" Command="{Binding ExitCommand}" />
             </StackPanel>
         </Grid>

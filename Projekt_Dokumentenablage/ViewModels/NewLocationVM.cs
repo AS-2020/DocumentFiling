@@ -176,7 +176,7 @@ namespace Projekt_Dokumentenablage.ViewModels
             SaveCommand = new RelayCommand((o) =>
             {
                 StorageLocation vorhanden = StorageLocationHandler.Instance.GetStorageLocations().Find(r => r.Floor == Floor && r.RoomNumber == RoomNumber && r.ShelfNumber == shelfNumber && r.Shelf == Shelf);
-                if (vorhanden == null && Floor != null && RoomNumber != null && ShelfNumber != null && Shelf == null)
+                if (vorhanden == null && Floor != null && RoomNumber != null && ShelfNumber != null && Shelf != null)
                 {
                     StorageLocation r = new StorageLocation()
                     {
@@ -219,7 +219,7 @@ namespace Projekt_Dokumentenablage.ViewModels
 
             SearchCommand = new RelayCommand((o) =>
             {
-                Locations = new ObservableCollection<StorageLocation>(StorageLocationHandler.Instance.GetStorageLocations().FindAll(r => r.Floor.ToLower().Contains(Floor.ToLower())));
+                Locations = new ObservableCollection<StorageLocation>(StorageLocationHandler.Instance.GetStorageLocations().FindAll(r => r.Floor.Equals(Floor)));
             });
 
             SortCommand = new RelayCommand((o) =>

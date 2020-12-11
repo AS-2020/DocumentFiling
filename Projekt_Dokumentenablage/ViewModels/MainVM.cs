@@ -359,20 +359,29 @@ namespace Projekt_Dokumentenablage.ViewModels
                 NameSelect.Add(item.Name);
             }
 
-
             NewLocation = new RelayCommand((o) =>
             {
 
                 Window start = new NewLocationView();
                 start.ShowDialog();
 
+                foreach (var item in StorageLocationHandler.Instance.GetStorageLocations())
+                {
+                    FloorSelect.Add(item.Floor);
+                }
+
             });
-            
+
             NewPerson = new RelayCommand((o) =>
             {
 
                 Window start = new NewPersonView();
                 start.ShowDialog();
+
+                foreach (var item in ResponsiblePersonHandler.Instance.GetResponsiblePerson())
+                {
+                    NameSelect.Add(item.Name);
+                }
 
             });
 
@@ -382,12 +391,27 @@ namespace Projekt_Dokumentenablage.ViewModels
                 if (vorhanden == null && documentNumber > 0 && Location != null && StorageLocationHandler.Instance.GetStorageLocations().Find(l => l == Location) != null
                 && Person != null && ResponsiblePersonHandler.Instance.GetResponsiblePerson().Find(p => p == Person) != null)
                 {
+                    StorageLocation l = new StorageLocation()
+                    {
+                        Floor = Floor,
+                        RoomNumber = RoomNumber,
+                        ShelfNumber = ShelfNumber,
+                        Shelf = Shelf
+                    };
+
+                    ResponsiblePerson p = new ResponsiblePerson()
+                    {
+                        Name = Name,
+                        OfficeNumber = OfficeNumber,
+                        Department = Department
+                    };
+
                     Document d = new Document()
                     {
                         DocumentNumber = DocumentNumber,
                         CreationDate = DateTime.Parse(CreationDate),
-                        Location = Location,
-                        Person = Person,
+                        Location = l,
+                        Person = p,
                         BriefDescription = BriefDescription
                     };
                     DocumentHandler.Instance.AddDocument(d);
@@ -411,7 +435,10 @@ namespace Projekt_Dokumentenablage.ViewModels
                 {
                     MessageBox.Show($"There is no {Location}");
                 }
-                // Person fehlt noch messagebox
+                else if (ResponsiblePersonHandler.Instance.GetResponsiblePerson().Find(l => l == Person) == null)
+                {
+                    MessageBox.Show($"There is no {Person}");
+                }
             });
 
             CancelCommand = new RelayCommand(Cancel);
@@ -446,12 +473,27 @@ namespace Projekt_Dokumentenablage.ViewModels
                 if (vorhanden == null && documentNumber > 0 && Location != null && StorageLocationHandler.Instance.GetStorageLocations().Find(l => l == Location) != null
                 && Person != null && ResponsiblePersonHandler.Instance.GetResponsiblePerson().Find(p => p == Person) != null)
                 {
+                    StorageLocation l = new StorageLocation()
+                    {
+                        Floor = Floor,
+                        RoomNumber = RoomNumber,
+                        ShelfNumber = ShelfNumber,
+                        Shelf = Shelf
+                    };
+
+                    ResponsiblePerson p = new ResponsiblePerson()
+                    {
+                        Name = Name,
+                        OfficeNumber = OfficeNumber,
+                        Department = Department
+                    };
+
                     Document d = new Document()
                     {
                         DocumentNumber = DocumentNumber,
                         CreationDate = DateTime.Parse(CreationDate),
-                        Location = Location,
-                        Person = Person,
+                        Location = l,
+                        Person = p,
                         BriefDescription = BriefDescription
                     };
                     if (d.CreationDate != vorhanden.CreationDate)
@@ -473,7 +515,7 @@ namespace Projekt_Dokumentenablage.ViewModels
                     DocumentHandler.Instance.RemoveDocument(vorhanden);
                     DocumentHandler.Instance.AddDocument(d);
                     documentsView.Add(d);
-                    //DocumentHandler.Instance.Change(d, geandert);
+                    DocumentHandler.Instance.Change(d, geandert);
                     Cancel(o);
                     DocumentView = new ObservableCollection<Document>(DocumentHandler.Instance.GetDocument().OrderBy(docu => docu.DocumentNumber));
                 }

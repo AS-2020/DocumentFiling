@@ -20,6 +20,7 @@ namespace Projekt_Dokumentenablage.ViewModels
     {
         private BaseViewModel _selectedViewModel;
 
+        private const string VERBINDUNG = @"Data Source=localhost\sqlexpress;Initial Catalog=DocumentFiling;User ID=sa;Password=P@ssword";
         public BaseViewModel SelectedViewModel
         {
             get { return _selectedViewModel; }
@@ -73,16 +74,36 @@ namespace Projekt_Dokumentenablage.ViewModels
 
         public ActualMainVM()
         {
-            UserHandler.Instance.Load();
+            //UserHandler.Instance.Load();
 
             Login = new RelayCommand((o) =>
             {
+                bool check = false;
+
                 MD5 hash = MD5.Create();
 
                 var schluessel1 = hash.ComputeHash(Encoding.UTF8.GetBytes(Password));
                 Password = Convert.ToBase64String(schluessel1);
 
-                if (UserHandler.Instance.GetUsers().Find(u => u.UserName == UserName && u.Password == Password) != null)
+                SqlConnection con = new SqlConnection(VERBINDUNG);
+
+                string sql = $"Select UserName, UserPassword from documentFilingPassword where UserName = '{UserName}' and UserPassword = '{Password}'";
+
+                con.Open();
+
+                SqlCommand com = new SqlCommand(sql, con);
+                SqlDataReader reader = com.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    check = true;
+                }
+
+                reader.Close();
+                com.Dispose();
+                con.Close();
+
+                if (check)
                 {
                     Window start = new DocumentFilingView();
                     start.ShowDialog();
@@ -91,6 +112,16 @@ namespace Projekt_Dokumentenablage.ViewModels
                 {
                     ErrorLogin = "Wrong Username or Password";
                 }
+
+                //if (UserHandler.Instance.GetUsers().Find(u => u.UserName == UserName && u.Password == Password) != null)
+                //{
+                //    Window start = new DocumentFilingView();
+                //    start.ShowDialog();
+                //}
+                //else
+                //{
+                //    ErrorLogin = "Wrong Username or Password";
+                //}
             });
 
             UpdatePage = new UpdateViewCommand(this);

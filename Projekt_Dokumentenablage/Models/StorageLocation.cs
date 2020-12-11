@@ -89,8 +89,8 @@ namespace Projekt_Dokumentenablage.Models
             con.Open();
             SqlCommand com = new SqlCommand();
 
-            string sql = $"Insert into storageLocation values ({storageLocation.Floor}, '{storageLocation.RoomNumber}', '{storageLocation.ShelfNumber}', " +
-                $"'{storageLocation.Shelf   }')";
+            string sql = $"Insert into storageLocation values ('{storageLocation.Floor}', '{storageLocation.RoomNumber}', '{storageLocation.ShelfNumber}', " +
+                $"'{storageLocation.Shelf}')";
             com = new SqlCommand(sql, con);
             SqlDataAdapter adapter = new SqlDataAdapter();
 
